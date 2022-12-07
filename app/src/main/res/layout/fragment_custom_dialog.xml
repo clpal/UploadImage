@@ -64,7 +64,7 @@
         android:id="@+id/cancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/round_corner"
         android:text="@string/cancel"
@@ -76,26 +76,13 @@
         app:layout_constraintTop_toBottomOf="@+id/chooseExisting" />
 
 
-    <!--    <TextView
-            android:visibility="gone"
-            android:id="@+id/label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:text="hello"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cancel"/>-->
-
     <Button
         android:id="@+id/allow_permission"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_corner"
         android:text="@string/visit_settings_and_allow_permission"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

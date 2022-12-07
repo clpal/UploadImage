@@ -1,6 +1,7 @@
 package com.clpal.uploadfileapp
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,12 +19,14 @@ import androidx.fragment.app.DialogFragment
 import com.clpal.uploadfileapp.Constant.Companion.toast
 import com.clpal.uploadfileapp.databinding.FragmentCustomDialogBinding
 
-class MyCustomDialog : DialogFragment() {
+
+class MyCustomDialog : DialogFragment(),View.OnClickListener {
     //   private var label: TextView? = null
     private var _binding: FragmentCustomDialogBinding? = null
     private val binding get() = _binding!!
     companion object {
         const val REQUEST_WRITE_PERMISSION = 100
+       const val REQUEST_CODE = 200
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner)
@@ -38,6 +41,7 @@ class MyCustomDialog : DialogFragment() {
                 // Permission Already Granted
                 val label: String = getString(R.string.permission_granted)
                 activity?.toast(label)
+
             } else {
                 // Make Permission Request
                 requestPermission()
@@ -48,6 +52,7 @@ class MyCustomDialog : DialogFragment() {
                 // Permission Already Granted
                 val label: String = getString(R.string.permission_granted)
                 activity?.toast(label)
+                openGalleryForImages()
             } else {
                 // Make Permission Request
                 requestPermission()
@@ -80,6 +85,7 @@ class MyCustomDialog : DialogFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        //when(requestCode==)
         if (grantResults.size > 0) {
             if (requestCode == REQUEST_WRITE_PERMISSION)
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -94,6 +100,46 @@ class MyCustomDialog : DialogFragment() {
                     // Check wheather checked dont ask again
                     checkUserRequestedDontAskAgain()
                 }
+        }
+    }
+
+    private fun openGalleryForImages() {
+
+        if (Build.VERSION.SDK_INT < 19) {
+            var intent = Intent()
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(
+                Intent.createChooser(intent, "Choose Pictures")
+                , REQUEST_CODE
+            )
+        }
+        else { // For latest versions API LEVEL 19+
+            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_CODE);
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE){
+            // if multiple images are selected
+            if (data?.getClipData() != null) {
+                var count = data.clipData?.itemCount
+
+                for (i in 0..count!! - 1) {
+                    var imageUri: Uri = data.clipData?.getItemAt(i)!!.uri
+                     //   iv_image.setImageURI(imageUri) Here you can assign your Image URI to the ImageViews
+                }
+            } else if (data?.getData() != null) {
+                // if single image is selected
+
+                var imageUri: Uri = data.data!!
+                //   iv_image.setImageURI(imageUri) Here you can assign the picked image uri to your imageview
+            }
         }
     }
 
@@ -120,6 +166,12 @@ class MyCustomDialog : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(v: View?) {
+        when(v.let {  id }){
+
+        }
     }
 }
 fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
