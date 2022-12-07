@@ -5,9 +5,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -15,18 +18,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import com.clpal.uploadfileapp.Constant.Companion.toast
 import com.clpal.uploadfileapp.databinding.FragmentCustomDialogBinding
+import java.io.File
 
 
 class MyCustomDialog : DialogFragment(),View.OnClickListener {
     //   private var label: TextView? = null
     private var _binding: FragmentCustomDialogBinding? = null
     private val binding get() = _binding!!
+
     companion object {
         const val REQUEST_WRITE_PERMISSION = 100
        const val REQUEST_CODE = 200
+
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner)
@@ -38,9 +45,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
         }
         binding.takePhoto.setOnClickListener {
             if (checkPermissionForReadExtertalStorage()) {
-                // Permission Already Granted
-                val label: String = getString(R.string.permission_granted)
-                activity?.toast(label)
+
 
             } else {
                 // Make Permission Request
@@ -50,8 +55,8 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
         binding.chooseExisting.setOnClickListener {
             if (checkPermissionForReadExtertalStorage()) {
                 // Permission Already Granted
-                val label: String = getString(R.string.permission_granted)
-                activity?.toast(label)
+          /*      val label: String = getString(R.string.permission_granted)
+                activity?.toast(label)*/
                 openGalleryForImages()
             } else {
                 // Make Permission Request
@@ -82,25 +87,31 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_WRITE_PERMISSION)
         }
     }
-
+    private fun getPhotoFile(fileName: String): File {
+        val directoryStorage = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName, ".jpg", directoryStorage)
+    }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //when(requestCode==)
-        if (grantResults.size > 0) {
-            if (requestCode == REQUEST_WRITE_PERMISSION)
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted
-                    val label: String = getString(R.string.permission_granted)
-                    activity?.toast(label)
+        when(requestCode){
+
+            REQUEST_WRITE_PERMISSION->{
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //permission from popup granted
                     binding.allowPermission!!.visibility = View.GONE
-                } else {
-                    // permission denied
+                    openGalleryForImages()
+                }
+                else {
+                    //permission from popup denied
                     val label: String = getString(R.string.permission_denied)
                     activity?.toast(label)
                     // Check wheather checked dont ask again
                     checkUserRequestedDontAskAgain()
                 }
+            }
         }
+
     }
 
     private fun openGalleryForImages() {
@@ -110,10 +121,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
             intent.type = "image/*"
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(
-                Intent.createChooser(intent, "Choose Pictures")
-                , REQUEST_CODE
-            )
+            startActivityForResult(Intent.createChooser(intent, "Choose Pictures"), REQUEST_CODE)
         }
         else { // For latest versions API LEVEL 19+
             var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
@@ -125,6 +133,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE){
             // if multiple images are selected
             if (data?.getClipData() != null) {
@@ -139,8 +148,10 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
 
                 var imageUri: Uri = data.data!!
                 //   iv_image.setImageURI(imageUri) Here you can assign the picked image uri to your imageview
+
             }
         }
+
     }
 
     private fun checkUserRequestedDontAskAgain() {
@@ -157,11 +168,11 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
     }
     override fun onResume() {
         super.onResume()
-        if (checkPermissionForReadExtertalStorage()) {
+       /* if (checkPermissionForReadExtertalStorage()) {
             val label: String = getString(R.string.permission_granted)
             activity?.toast(label)
             binding.allowPermission.visibility = View.GONE
-        }
+        }*/
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -175,3 +186,4 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
     }
 }
 fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
