@@ -17,5 +17,6 @@ class Constant {
          fun Context.showMsg(msg: String){
             Toast.makeText(this,msg,Toast.LENGTH_SHORT).show()
         }
+        fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
