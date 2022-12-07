@@ -2,6 +2,7 @@ package com.clpal.uploadfileapp
 
 import android.Manifest
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -164,7 +165,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_GALLERY){
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_GALLERY){
             // if multiple images are selected
             if (data?.getClipData() != null) {
                 var count = data.clipData?.itemCount
@@ -181,7 +182,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
 
             }
         }
-        else if (requestCode == REQUEST_CODE_CAMERA)
+        else if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null)
         {
             val thumbnail = data!!.extras!!.get("data") as Bitmap
             //imageview!!.setImageBitmap(thumbnail)
@@ -192,16 +193,13 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
     fun saveImage(myBitmap: Bitmap):String {
         val bytes = ByteArrayOutputStream()
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-        val wallpaperDirectory = File(
-            (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
+        val wallpaperDirectory = File((Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
         // have the object build the directory structure, if needed.
         Log.d("fee",wallpaperDirectory.toString())
         if (!wallpaperDirectory.exists())
         {
-
             wallpaperDirectory.mkdirs()
         }
-
         try
         {
             Log.d("heel",wallpaperDirectory.toString())
@@ -237,14 +235,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
             }
         }
     }
-    override fun onResume() {
-        super.onResume()
-       /* if (checkPermissionForReadExtertalStorage()) {
-            val label: String = getString(R.string.permission_granted)
-            activity?.toast(label)
-            binding.allowPermission.visibility = View.GONE
-        }*/
-    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -256,5 +247,5 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
         }
     }
 }
-fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
 
