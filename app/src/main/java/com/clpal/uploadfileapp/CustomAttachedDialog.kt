@@ -32,7 +32,8 @@ import java.io.IOException
 import java.util.*
 
 // https://demonuts.com/pick-image-gallery-camera-android-kotlin/
-class MyCustomDialog : DialogFragment(),View.OnClickListener {
+// https://stackoverflow.com/questions/18579590/how-to-send-data-from-dialogfragment-to-a-fragment
+class MyCustomDialog(private val onPhotoSelected :OnPhotoSelected) : DialogFragment(),View.OnClickListener {
     //   private var label: TextView? = null
     private var _binding: FragmentCustomDialogBinding? = null
     private val binding get() = _binding!!
@@ -179,7 +180,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
 
                 var imageUri: Uri = data.data!!
                 //   iv_image.setImageURI(imageUri) Here you can assign the picked image uri to your imageview
-
+                onPhotoSelected.selectedPhoto(imageUri)
             }
         }
         else if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null)
@@ -190,7 +191,7 @@ class MyCustomDialog : DialogFragment(),View.OnClickListener {
             Toast.makeText(requireActivity(), "Image Saved!", Toast.LENGTH_SHORT).show()
         }
     }
-    fun saveImage(myBitmap: Bitmap):String {
+    private fun saveImage(myBitmap: Bitmap):String {
         val bytes = ByteArrayOutputStream()
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
         val wallpaperDirectory = File((Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
