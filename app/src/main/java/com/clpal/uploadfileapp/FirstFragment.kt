@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import com.clpal.uploadfileapp.databinding.FragmentFirstBinding
 import java.io.File
@@ -40,8 +42,8 @@ class FirstFragment : Fragment() ,OnPhotoSelected{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewAttached.setOnClickListener {
-            MyCustomDialog(this).show(requireActivity().supportFragmentManager, "MyCustomFragment")
-
+           MyCustomDialog(this).show(requireActivity().supportFragmentManager, "MyCustomFragment")
+            //showAlertBox()
         }
     }
 
@@ -51,15 +53,20 @@ class FirstFragment : Fragment() ,OnPhotoSelected{
     }
 
     override fun selectedPhoto(uri: Uri) {
-        //val fileName = File(uri.path).name
-        val fileName = File(uri.path)
-// or
-       // val fileName = uri.pathSegments.last()
-       // binding.tvAttachment.text = uri.lastPathSegment
-        var filesize = fileName.length()/1024
-        binding.tvAttachment.text = uri.getName(requireContext())+"-"+getFileSize(uri)/1024+"KB"
-        binding.tvAttachment.visibility = View.VISIBLE
+        if (getFileSize(uri)/1024>1096) {
+            showErrorAlert()
+        }
 
+        else{
+            //val fileName = File(uri.path).name
+            val fileName = File(uri.path)
+// or
+            // val fileName = uri.pathSegments.last()
+            // binding.tvAttachment.text = uri.lastPathSegment
+            var filesize = fileName.length()/1024
+            binding.tvAttachment.text = uri.getName(requireContext())+"-"+getFileSize(uri)/1024+"KB"
+            binding.tvAttachment.visibility = View.VISIBLE
+        }
     }
     private fun Uri.getName(context: Context): String? {
         val returnCursor = context.contentResolver.query(this, null, null, null, null)
@@ -132,4 +139,19 @@ class FirstFragment : Fragment() ,OnPhotoSelected{
             }
         }
         return File(path)}
+
+
+
+    private fun showErrorAlert(){
+        val builder = AlertDialog.Builder(requireActivity(),R.style.CustomAlertDialog)
+            .create()
+        val view = layoutInflater.inflate(R.layout.fragment_custom_error_dialog,null)
+        val  button = view.findViewById<Button>(R.id.dialogDismiss_button)
+        builder.setView(view)
+        button.setOnClickListener {
+            builder.dismiss()
+        }
+        builder.setCanceledOnTouchOutside(false)
+        builder.show()
+    }
 }

@@ -95,7 +95,7 @@ allowed size (4.0 MB)"
 
 
     <Button
-        android:id="@+id/click"
+        android:id="@+id/dialogDismiss_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
@@ -104,6 +104,7 @@ allowed size (4.0 MB)"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/table1" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

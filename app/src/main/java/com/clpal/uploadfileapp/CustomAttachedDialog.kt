@@ -19,6 +19,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -42,21 +43,9 @@ class MyCustomDialog(private val onPhotoSelected :OnPhotoSelected) : DialogFragm
         const val REQUEST_WRITE_PERMISSION = 100
        const val REQUEST_CODE_GALLERY = 200
         private const val REQUEST_CODE_CAMERA = 2
-        private val IMAGE_DIRECTORY = "/demonuts"
+        private const val IMAGE_DIRECTORY = "/demonuts"
     }
-    private fun showPictureDialog() {
-        val pictureDialog = AlertDialog.Builder(requireActivity())
-        pictureDialog.setTitle("Select Action")
-        val pictureDialogItems = arrayOf("Select photo from gallery", "Capture photo from camera")
-        pictureDialog.setItems(pictureDialogItems
-        ) { dialog, which ->
-            when (which) {
-                //0 -> choosePhotoFromGallary()
-               // 1 -> takePhotoFromCamera()
-            }
-        }
-        pictureDialog.show()
-    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dialog!!.window?.setBackgroundDrawableResource(R.drawable.round_corner)
@@ -160,7 +149,7 @@ class MyCustomDialog(private val onPhotoSelected :OnPhotoSelected) : DialogFragm
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = "image/*"
-            startActivityForResult(intent, REQUEST_CODE_GALLERY);
+            startActivityForResult(intent, REQUEST_CODE_GALLERY)
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -247,6 +236,8 @@ class MyCustomDialog(private val onPhotoSelected :OnPhotoSelected) : DialogFragm
 
         }
     }
+
+
 }
 
 
