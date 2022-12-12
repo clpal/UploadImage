@@ -154,7 +154,7 @@ class MyCustomDialog(private val onPhotoSelected :OnPhotoSelected) : DialogFragm
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        dismiss()
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_GALLERY){
             // if multiple images are selected
             if (data?.getClipData() != null) {
@@ -170,6 +170,7 @@ class MyCustomDialog(private val onPhotoSelected :OnPhotoSelected) : DialogFragm
                 var imageUri: Uri = data.data!!
                 //   iv_image.setImageURI(imageUri) Here you can assign the picked image uri to your imageview
                 onPhotoSelected.selectedPhoto(imageUri)
+
             }
         }
         else if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null)

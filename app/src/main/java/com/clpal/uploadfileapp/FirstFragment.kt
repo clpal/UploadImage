@@ -14,27 +14,42 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isGone
 import androidx.navigation.fragment.findNavController
 import com.clpal.uploadfileapp.databinding.FragmentFirstBinding
 import java.io.File
+
+import android.os.Handler
+import android.text.method.LinkMovementMethod
+import android.view.Gravity
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() ,OnPhotoSelected{
+    var isStarted = false
+    var progressStatus = 0
+    var handler: Handler? = null
+    var secondaryHandler: Handler? = Handler()
+    var primaryProgressStatus = 0
+    var secondaryProgressStatus = 0
 
+
+    private var progressBarStatus = 0
+    var dummy:Int = 0
     private var _binding: FragmentFirstBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+
+
+
+
         return binding.root
 
     }
@@ -45,27 +60,63 @@ class FirstFragment : Fragment() ,OnPhotoSelected{
            MyCustomDialog(this).show(requireActivity().supportFragmentManager, "MyCustomFragment")
             //showAlertBox()
         }
-    }
+        binding.cancel.setOnClickListener {
 
+            binding.rl.visibility = View.GONE
+        }
+
+binding.textViewLink.setOnClickListener {
+    showDownloadAlert()
+}
+
+
+    }
+private fun onProgressBar(){
+
+    // task is run on a thread
+    Thread(Runnable {
+        // dummy thread mimicking some operation whose progress can be tracked
+        while (progressBarStatus < 100) {
+            // performing some dummy operation
+            try {
+                //  dummy = dummy+1
+                dummy += 2
+                //primaryProgressStatus += 1
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            // tracking progress
+            progressBarStatus = dummy
+
+            // Updating the progress bar
+            binding.progressBarHorizontal.progress = progressBarStatus
+            ///binding.textViewLink.movementMethod = LinkMovementMethod.getInstance()
+        }
+
+    }).start()
+}
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     override fun selectedPhoto(uri: Uri) {
+     //   binding.rl.visibility = View.VISIBLE
         if (getFileSize(uri)/1024>1096) {
             showErrorAlert()
         }
 
         else{
+            onProgressBar()
             //val fileName = File(uri.path).name
             val fileName = File(uri.path)
 // or
             // val fileName = uri.pathSegments.last()
             // binding.tvAttachment.text = uri.lastPathSegment
             var filesize = fileName.length()/1024
-            binding.tvAttachment.text = uri.getName(requireContext())+"-"+getFileSize(uri)/1024+"KB"
-            binding.tvAttachment.visibility = View.VISIBLE
+            binding.fileName.text = uri.getName(requireContext())+"-"+getFileSize(uri)/1024+"KB"
+            binding.rl.visibility = View.VISIBLE
         }
     }
     private fun Uri.getName(context: Context): String? {
@@ -154,4 +205,18 @@ class FirstFragment : Fragment() ,OnPhotoSelected{
         builder.setCanceledOnTouchOutside(false)
         builder.show()
     }
+
+        private fun showDownloadAlert(){
+            val builder = AlertDialog.Builder(requireActivity(),R.style.CustomAlertDialog)
+                .create()
+            val view = layoutInflater.inflate(R.layout.download_dialog,null)
+            val  button = view.findViewById<Button>(R.id.dialogDismiss_button)
+            builder!!.window?.setGravity(Gravity.BOTTOM)
+            builder.setView(view)
+            button.setOnClickListener {
+                builder.dismiss()
+            }
+            builder.setCanceledOnTouchOutside(false)
+            builder.show()
+        }
 }

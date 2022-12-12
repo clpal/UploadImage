@@ -4,18 +4,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstFragment">
+    android:background="@android:color/darker_gray"
+    tools:context=".FirstFragment"
+    >
+    <LinearLayout
+android:visibility="visible"
+        android:id="@+id/rl"
+         android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:padding="5dp"
+        android:background="@drawable/white_box_chat"
+        app:layout_constraintBottom_toTopOf="@+id/viewAttached"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<RelativeLayout
+
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_marginBottom="0dp"
+    app:layout_constraintStart_toStartOf="parent"
+    android:background="@drawable/chat_round_corner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/tvAttachment"
+
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+
+        android:src="@drawable/ic_baseline_image_24"
+
+        android:visibility="visible" />
 
     <TextView
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/tvAttachment"
+        android:id="@+id/fileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvAttachment"
+        android:text="image"
+        android:textColor="@color/white"
+
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_baseline_cancel_24"
+        android:visibility="visible" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBarHorizontal"
+        style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/viewAttached"
-        android:drawableStart="@drawable/ic_baseline_image_24"
-        android:visibility="gone" />
+        android:layout_below="@+id/tvAttachment"
+        android:minHeight="5dp"
+        android:padding="0dp"
+        android:progress="0"
+        android:progressBackgroundTint="@android:color/transparent"
+        android:progressTint="@color/greenColor" />
+
+
+    <TextView
+        android:id="@+id/textView_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBarHorizontal"
+
+        android:padding="0dip"
+        android:text="download"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textColorLink="#306EFF"
+        android:textSize="10dip"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/download"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_below="@+id/textView_link"
+        android:layout_alignStart="@+id/textView_link"
+        android:layout_alignEnd="@+id/textView_link"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/holo_blue_dark"
+        android:visibility="visible" />
+</RelativeLayout>
+    </LinearLayout>
     <ImageView
     android:padding="0dp"
         android:id="@+id/viewAttached"
@@ -29,4 +111,5 @@
 
 
      />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

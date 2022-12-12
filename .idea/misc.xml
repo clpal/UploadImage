@@ -4,16 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/btn_round_corner.xml" value="0.1" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/card_round_corner.xml" value="0.22" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/chat_round_corner.xml" value="0.2095" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/ic_baseline_attachment_24.xml" value="0.1945" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.171" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/round_corner.xml" value="0.2115" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/rounded_corner_error.xml" value="0.2105" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/drawable/white_box_chat.xml" value="0.169" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/a.xml" value="0.25" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/content_main.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/download_dialog.xml" value="0.21" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/fragment_attached_dialog.xml" value="0.25" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/fragment_custom_dialog.xml" value="0.5" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/fragment_custom_error_dialog.xml" value="0.33" />
-        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/fragment_first.xml" value="0.15534420289855072" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/fragment_first.xml" value="0.5238938053097345" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/fragment_second.xml" value="0.16621376811594202" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/UploadFileApp/app/src/main/res/layout/fragment_unexpected_error.xml" value="0.67" />
       </map>
     </option>
